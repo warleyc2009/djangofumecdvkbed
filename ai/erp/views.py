@@ -1,21 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 from .models import Product, ProductCategory, Region, Store, Employee, Sale
 
-# View para renderizar a página inicial
-# Essa função simplesmente renderiza a página "home.html"
+# Página inicial
 def index(request):
     return render(request, "home.html")
 
-# View para listar todos os produtos
-# Busca todos os registros de produtos e passa para o template 'product/product_list.html'
+# Listar todos os produtos
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'product/product_list.html', {"products": products})
 
-# View para criar um novo produto
-# Caso o método seja POST, cria o produto com os dados recebidos, senão, renderiza o formulário
-# Busca todas as categorias de produtos e passa para o template 'product/product_form.html'
+# Criar um novo produto
 def product_create(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -38,9 +35,7 @@ def product_create(request):
     categorias = ProductCategory.objects.all()
     return render(request, 'product/product_form.html', {'categorias': categorias})
 
-# View para atualizar um produto existente
-# Caso o método seja POST, atualiza o produto com os dados recebidos, senão, renderiza o formulário com os dados atuais
-# Busca todas as categorias de produtos e passa para o template 'product/product_form.html'
+# Atualizar um produto existente
 def product_update(request, product_id):
     produto = get_object_or_404(Product, pk=product_id)
     if request.method == 'POST':
@@ -55,19 +50,18 @@ def product_update(request, product_id):
     categorias = ProductCategory.objects.all()
     return render(request, 'product/product_form.html', {'produto': produto, 'categorias': categorias})
 
-# View para deletar um produto
-# Deleta o produto e redireciona para a lista de produtos
+# Deletar um produto
 def product_delete(request, product_id):
     produto = get_object_or_404(Product, pk=product_id)
     produto.delete()
     return redirect('product_list')
 
-# View para listar categorias de produtos
+# Listar todas as categorias de produtos
 def prodcateg_list(request):
     categorias = ProductCategory.objects.all()
     return render(request, 'productCategory/productCategory_list.html', {"categorias": categorias})
 
-# View para criar uma nova categoria de produto
+# Criar uma nova categoria de produto
 def prodcateg_create(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -81,7 +75,7 @@ def prodcateg_create(request):
 
     return render(request, 'productCategory/productCategory_form.html')
 
-# View para atualizar uma categoria de produto
+# Atualizar uma categoria de produto existente
 def prodcateg_update(request, category_id):
     categoria = get_object_or_404(ProductCategory, pk=category_id)
     if request.method == 'POST':
@@ -92,18 +86,18 @@ def prodcateg_update(request, category_id):
 
     return render(request, 'productCategory/productCategory_form.html', {'categoria': categoria})
 
-# View para deletar uma categoria de produto
+# Deletar uma categoria de produto
 def prodcateg_delete(request, category_id):
     categoria = get_object_or_404(ProductCategory, pk=category_id)
     categoria.delete()
     return redirect('prodcateg_list')
 
-# View para listar regiões
+# Listar todas as regiões
 def region_list(request):
     regions = Region.objects.all()
     return render(request, 'region/region_list.html', {"regions": regions})
 
-# View para criar uma nova região
+# Criar uma nova região
 def region_create(request):
     if request.method == 'POST':
         country = request.POST['country']
@@ -118,7 +112,7 @@ def region_create(request):
         return redirect('region_list')
     return render(request, 'region/region_form.html')
 
-# View para atualizar uma região existente
+# Atualizar uma região existente
 def region_update(request, region_id):
     region = get_object_or_404(Region, pk=region_id)
     if request.method == 'POST':
@@ -129,18 +123,18 @@ def region_update(request, region_id):
         return redirect('region_list')
     return render(request, 'region/region_form.html', {'region': region})
 
-# View para deletar uma região
+# Deletar uma região
 def region_delete(request, region_id):
     region = get_object_or_404(Region, pk=region_id)
     region.delete()
     return redirect('region_list')
 
-# View para listar lojas
+# Listar todas as lojas
 def store_list(request):
     stores = Store.objects.all()
     return render(request, 'store/store_list.html', {"stores": stores})
 
-# View para criar uma nova loja
+# Criar uma nova loja
 def store_create(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -163,7 +157,7 @@ def store_create(request):
     regions = Region.objects.all()
     return render(request, 'store/store_form.html', {'regions': regions})
 
-# View para atualizar uma loja existente
+# Atualizar uma loja existente
 def store_update(request, store_id):
     store = get_object_or_404(Store, pk=store_id)
     if request.method == 'POST':
@@ -178,8 +172,115 @@ def store_update(request, store_id):
     regions = Region.objects.all()
     return render(request, 'store/store_form.html', {'store': store, 'regions': regions})
 
-# View para deletar uma loja
+# Deletar uma loja
 def store_delete(request, store_id):
     store = get_object_or_404(Store, pk=store_id)
     store.delete()
     return redirect('store_list')
+
+# Listar todos os funcionários
+def employee_list(request):
+    employees = Employee.objects.all()
+    return render(request, 'employee/employee_list.html', {"employees": employees})
+
+# Criar um novo funcionário
+def employee_create(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        store_id = request.POST['store']
+        department = request.POST['department']
+        role = request.POST['role']
+        birth_date = parse_date(request.POST['birth_date'])
+        gender = request.POST['gender']
+        education_level = request.POST['education_level']
+        salary = request.POST['salary']
+        hire_date = parse_date(request.POST['hire_date'])
+
+        store = get_object_or_404(Store, pk=store_id)
+
+        Employee.objects.create(
+            name=name,
+            store=store,
+            department=department,
+            role=role,
+            birth_date=birth_date,
+            gender=gender,
+            education_level=education_level,
+            salary=salary,
+            hire_date=hire_date
+        )
+        return redirect('employee_list')
+
+    stores = Store.objects.all()
+    return render(request, 'employee/employee_form.html', {'stores': stores})
+
+# Atualizar um funcionário existente
+def employee_update(request, employee_id):
+    employee = get_object_or_404(Employee, pk=employee_id)
+    if request.method == 'POST':
+        employee.name = request.POST['name']
+        employee.store = get_object_or_404(Store, pk=request.POST['store'])
+        employee.department = request.POST['department']
+        employee.role = request.POST['role']
+        employee.birth_date = request.POST['birth_date']
+        employee.salary = request.POST['salary']
+        employee.save()
+        return redirect('employee_list')
+
+    stores = Store.objects.all()
+    return render(request, 'employee/employee_form.html', {'employee': employee, 'stores': stores})
+
+# Deletar um funcionário
+def employee_delete(request, employee_id):
+    employee = get_object_or_404(Employee, pk=employee_id)
+    employee.delete()
+    return redirect('employee_list')
+
+# Listar todas as vendas
+def sale_list(request):
+    sales = Sale.objects.all()
+    return render(request, 'sale/sale_list.html', {"sales": sales})
+
+# Criar uma nova venda
+def sale_create(request):
+    if request.method == 'POST':
+        store_id = request.POST['store']
+        product_id = request.POST['product']
+        quantity = request.POST['quantity']
+        discounts = request.POST.get('discounts', 0.00)
+
+        store = get_object_or_404(Store, pk=store_id)
+        product = get_object_or_404(Product, pk=product_id)
+
+        Sale.objects.create(
+            store=store,
+            product=product,
+            quantity=quantity,
+            discounts=discounts
+        )
+        return redirect('sale_list')
+
+    stores = Store.objects.all()
+    products = Product.objects.all()
+    return render(request, 'sale/sale_form.html', {'stores': stores, 'products': products})
+
+# Atualizar uma venda existente
+def sale_update(request, sale_id):
+    sale = get_object_or_404(Sale, pk=sale_id)
+    if request.method == 'POST':
+        sale.store = get_object_or_404(Store, pk=request.POST['store'])
+        sale.product = get_object_or_404(Product, pk=request.POST['product'])
+        sale.quantity = request.POST['quantity']
+        sale.discounts = request.POST.get('discounts', 0.00)
+        sale.save()
+        return redirect('sale_list')
+
+    stores = Store.objects.all()
+    products = Product.objects.all()
+    return render(request, 'sale/sale_form.html', {'sale': sale, 'stores': stores, 'products': products})
+
+# Deletar uma venda
+def sale_delete(request, sale_id):
+    sale = get_object_or_404(Sale, pk=sale_id)
+    sale.delete()
+    return redirect('sale_list')
