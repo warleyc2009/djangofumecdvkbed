@@ -1,7 +1,7 @@
 import os
 
 # Caminho raiz do projeto
-root_dir = '/caminho/para/seu/projeto'
+root_dir = './ai'
 
 # Arquivo de saída
 output_file = 'projeto_completo.txt'
