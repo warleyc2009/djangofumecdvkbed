@@ -20,14 +20,13 @@ python3 -m pip install -r requirements.txt
 
 # 3. Instancia o banco de dados
 echo "Instanciando o banco de dados..."
-cd ./ai
 
 # Faz as migrações do Django
 echo "Executando makemigrations..."
-python3 manage.py makemigrations erp
+python3 ./ai/manage.py makemigrations erp
 
 echo "Aplicando migrações..."
-python3 manage.py migrate
+python3 ./ai/manage.py migrate
 
 # Mensagem final de sucesso
 echo "==============================="
