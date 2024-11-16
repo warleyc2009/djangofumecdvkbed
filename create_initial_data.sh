@@ -2,6 +2,5 @@
 echo "Ativando o ambiente virtual..."
 source ./venv/bin/activate
 
-# 2 - inicia o servidor
-cd ./ai
-python3 manage.py runserver
+# 2 - Cria os dados
+python3 ./ai/create_initial_data.py
