@@ -1,0 +1,19 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Categorias de Produtos - ERP System{% endblock %}
+
+{% block list_header %}Lista de Categorias de Produtos{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px; text-align: right;">
+        <a href="/erp/prodcateg/create" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Adicionar Nova Categoria</a>
+    </div>
+    <div class="card-container">
+        {% for categoria in categorias %}
+            <a href="/erp/prodcateg/update/{{ categoria.id }}" class="card">
+                <strong>{{ categoria.name }}</strong><br>
+                Descrição: {{ categoria.description }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

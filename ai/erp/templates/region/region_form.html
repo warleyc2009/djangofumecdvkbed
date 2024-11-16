@@ -1,0 +1,34 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Região - ERP System{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if region %}Editar Região{% else %}Adicionar Nova Região{% endif %}
+    </div>
+    <form method="post" action="{% if region %}{% url 'region_update' region.id %}{% else %}{% url 'region_create' %}{% endif %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="country">País:</label>
+            <input type="text" id="country" name="country" value="{% if region %}{{ region.country }}{% else %}Brasil{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="state">Estado:</label>
+            <input type="text" id="state" name="state" value="{% if region %}{{ region.state }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" name="city" value="{% if region %}{{ region.city }}{% endif %}" required>
+        </div>
+        <div style="margin-top: 30px;">
+            <button
+                type="submit"
+                class="button"
+                style="background-color: #72b574; color: white; font-size: 16px; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none; cursor: pointer"
+            >{% if region %}Editar{% else %}Criar{% endif %}</button>
+            {% if region %}
+                <a href="{% url 'region_delete' region.id %}" class="button" style="background-color: #ff4c4c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Deletar</a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

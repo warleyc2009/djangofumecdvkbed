@@ -1,0 +1,54 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Produto - ERP System{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if produto %}Editar Produto{% else %}Adicionar Novo Produto{% endif %}
+    </div>
+    <form method="post" action="{% if produto %}{% url 'product_update' produto.id %}{% else %}{% url 'product_create' %}{% endif %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="name">Nome do Produto:</label>
+            <input type="text" id="name" name="name" value="{% if produto %}{{ produto.name }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="brand">Marca:</label>
+            <input type="text" id="brand" name="brand" value="{% if produto %}{{ produto.brand }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="price">Preço:</label>
+            <input type="number" id="price" name="price" value="{% if produto %}{{ produto.price }}{% endif %}" step="0.01" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="category">Categoria:</label>
+            <select id="category" name="category" required>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}" {% if produto and produto.category.id == categoria.id %}selected{% endif %}>{{ categoria.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="sku">SKU:</label>
+            <input type="text" id="sku" name="sku" value="{% if produto %}{{ produto.sku }}{% endif %}" required>
+        </div>
+        <div style="margin-top: 30px;">
+            <button
+                type="submit"
+                class="button"
+                style="background-color: #72b574; color: white; font-size: 16px; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none; cursor: pointer"
+            >
+                {% if produto %}Editar{% else %}Criar{% endif %}
+            </button>
+            {% if produto %}
+                <a
+                    href="{% url 'product_delete' produto.id %}"
+                    class="button"
+                    style="background-color: #ff4c4c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"
+                >
+                    Deletar
+                </a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

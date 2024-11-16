@@ -1,0 +1,21 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Vendas - ERP System{% endblock %}
+
+{% block list_header %}Lista de Vendas{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px; text-align: right;">
+        <a href="/erp/sales/create" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Adicionar Nova Venda</a>
+    </div>
+    <div class="card-container">
+        {% for sale in sales %}
+            <a href="/erp/sales/update/{{ sale.id }}" class="card">
+                <strong>Produto: {{ sale.product.name }}</strong><br>
+                Loja: {{ sale.store.name }}<br>
+                Quantidade: {{ sale.quantity }}<br>
+                Desconto: R$ {{ sale.discounts }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Funcionário - ERP System{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if employee %}Editar Funcionário{% else %}Adicionar Novo Funcionário{% endif %}
+    </div>
+    <form method="post" action="{% if employee %}{% url 'employee_update' employee.id %}{% else %}{% url 'employee_create' %}{% endif %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="name">Nome do Funcionário:</label>
+            <input type="text" id="name" name="name" value="{% if employee %}{{ employee.name }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="store">Loja:</label>
+            <select id="store" name="store" required>
+                {% for store in stores %}
+                    <option value="{{ store.id }}" {% if employee and employee.store.id == store.id %}selected{% endif %}>{{ store.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="department">Departamento:</label>
+            <input type="text" id="department" name="department" value="{% if employee %}{{ employee.department }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="role">Cargo:</label>
+            <input type="text" id="role" name="role" value="{% if employee %}{{ employee.role }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="birth_date">Data de Nascimento:</label>
+            <input type="date" id="birth_date" name="birth_date" value="{% if employee %}{{ employee.birth_date|date:'Y-m-d' }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="gender">Gênero:</label>
+            <select id="gender" name="gender" required>
+                <option value="M" {% if employee and employee.gender == 'M' %}selected{% endif %}>Masculino</option>
+                <option value="F" {% if employee and employee.gender == 'F' %}selected{% endif %}>Feminino</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="education_level">Nível de Escolaridade:</label>
+            <select id="education_level" name="education_level" required>
+                <option value="BS" {% if employee and employee.education_level == 'BS' %}selected{% endif %}>Ensino Médio</option>
+                <option value="GD" {% if employee and employee.education_level == 'GD' %}selected{% endif %}>Graduação</option>
+                <option value="EP" {% if employee and employee.education_level == 'EP' %}selected{% endif %}>Especialização</option>
+                <option value="MT" {% if employee and employee.education_level == 'MT' %}selected{% endif %}>Mestrado</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="salary">Salário:</label>
+            <input type="number" id="salary" name="salary" value="{% if employee %}{{ employee.salary }}{% endif %}" step="0.01" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="hire_date">Data de Admissão:</label>
+            <input type="date" id="hire_date" name="hire_date" value="{% if employee %}{{ employee.hire_date|date:'Y-m-d' }}{% endif %}" required>
+        </div>
+        <div style="margin-top: 30px;">
+            <button
+                type="submit"
+                class="button"
+                style="background-color: #72b574; color: white; font-size: 16px; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none; cursor: pointer"
+            >{% if employee %}Editar{% else %}Criar{% endif %}</button>
+            {% if employee %}
+                <a href="{% url 'employee_delete' employee.id %}" class="button" style="background-color: #ff4c4c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Deletar</a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

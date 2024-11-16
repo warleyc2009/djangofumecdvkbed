@@ -1,0 +1,16 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Produtos - ERP System{% endblock %}
+
+{% block list_header %}Lista de Produtos
+    <div style="margin-top: 20px; text-align: right;">
+        <a href="/erp/product/create" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Adicionar Novo Produto</a>
+    </div>{% endblock %}
+
+{% block content %}
+    {% for produto in products %}
+        <a href="/erp/product/update/{{ produto.id }}" class="card">
+            <strong>{{ produto.name }}</strong> - Marca: {{ produto.brand }} - Preço: ${{ produto.price }}
+        </a>
+    {% endfor %}
+{% endblock %}

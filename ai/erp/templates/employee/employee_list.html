@@ -1,0 +1,20 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Funcionários - ERP System{% endblock %}
+
+{% block list_header %}Lista de Funcionários{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px; text-align: right;">
+        <a href="/erp/employees/create" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Adicionar Novo Funcionário</a>
+    </div>
+    <div class="card-container">
+        {% for employee in employees %}
+            <a href="/erp/employees/update/{{ employee.id }}" class="card">
+                <strong>{{ employee.name }}</strong><br>
+                Loja: {{ employee.store.name }}<br>
+                Cargo: {{ employee.role }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

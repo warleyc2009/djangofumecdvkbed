@@ -1,0 +1,46 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Loja - ERP System{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if store %}Editar Loja{% else %}Adicionar Nova Loja{% endif %}
+    </div>
+    <form method="post" action="{% if store %}{% url 'store_update' store.id %}{% else %}{% url 'store_create' %}{% endif %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="name">Nome da Loja:</label>
+            <input type="text" id="name" name="name" value="{% if store %}{{ store.name }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="region">Região:</label>
+            <select id="region" name="region" required>
+                {% for region in regions %}
+                    <option value="{{ region.id }}" {% if store and store.region.id == region.id %}selected{% endif %}>{{ region.state }} - {{ region.city }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="neighborhood">Bairro:</label>
+            <input type="text" id="neighborhood" name="neighborhood" value="{% if store %}{{ store.neighborhood }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="address">Endereço:</label>
+            <input type="text" id="address" name="address" value="{% if store %}{{ store.address }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" name="cep" value="{% if store %}{{ store.cep }}{% endif %}" required>
+        </div>
+        <div style="margin-top: 30px;">
+            <button
+                type="submit"
+                class="button"
+                style="background-color: #72b574; color: white; font-size: 16px; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none; cursor: pointer"
+            >{% if store %}Editar{% else %}Criar{% endif %}</button>
+            {% if store %}
+                <a href="{% url 'store_delete' store.id %}" class="button" style="background-color: #ff4c4c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Deletar</a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

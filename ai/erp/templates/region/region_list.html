@@ -1,0 +1,20 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Regiões - ERP System{% endblock %}
+
+{% block list_header %}Lista de Regiões{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px; text-align: right;">
+        <a href="/erp/regions/create" class="button" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Adicionar Nova Região</a>
+    </div>
+    <div class="card-container">
+        {% for region in regions %}
+            <a href="/erp/regions/update/{{ region.id }}" class="card">
+                <strong>{{ region.city }}</strong><br>
+                Estado: {{ region.state }}<br>
+                País: {{ region.country }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

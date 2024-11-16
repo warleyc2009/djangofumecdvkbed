@@ -1,0 +1,30 @@
+{% extends '../entity_base_list.html' %}
+
+{% block title %}Categoria - ERP System{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if categoria %}Editar Categoria{% else %}Adicionar Nova Categoria{% endif %}
+    </div>
+    <form method="post" action="{% if categoria %}{% url 'prodcateg_update' categoria.id %}{% else %}{% url 'prodcateg_create' %}{% endif %}">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="name">Nome da Categoria:</label>
+            <input type="text" id="name" name="name" value="{% if categoria %}{{ categoria.name }}{% endif %}" required>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" rows="4">{% if categoria %}{{ categoria.description }}{% endif %}</textarea>
+        </div>
+        <div style="margin-top: 30px;">
+            <button
+                type="submit"
+                class="button"
+                style="background-color: #72b574; color: white; font-size: 16px; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none; cursor: pointer"
+            >{% if categoria %}Editar{% else %}Criar{% endif %}</button>
+            {% if categoria %}
+                <a href="{% url 'prodcateg_delete' categoria.id %}" class="button" style="background-color: #ff4c4c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Deletar</a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}
