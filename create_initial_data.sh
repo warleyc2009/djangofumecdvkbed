@@ -4,4 +4,4 @@ source ./venv/bin/activate
 
 # 2 - Cria os dados
 echo "Criando os dados de exemplo..."
-python3 ./ai/create_initial_data.py
+python3 ./ai/manage.py shell < ./ai/create_initial_data.py
